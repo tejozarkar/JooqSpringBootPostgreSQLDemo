@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.3.1.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.tej</groupId>
+	<artifactId>JooQDemo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>JooQDemo</name>
+	<description>Demo project for Spring Boot</description>
+
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!--	JOOQ 	-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jooq</artifactId>
+		</dependency>
+
+		<!--	PostgreSQL	-->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<!--	JOOQ	-->
+			<plugin>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen-maven</artifactId>
+				<executions>
+					<execution>
+						<id>generate-mysql</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<!--Insert your DB configuration-->
+							<jdbc>
+								<driver>org.postgresql.Driver</driver>
+								<url>jdbc:postgresql://localhost:5432/jooq</url>
+								<user>postgres</user>
+								<password>root</password>
+							</jdbc>
+							<generator>
+								<database>
+									<name>org.jooq.meta.postgres.PostgresDatabase</name>
+									<includes>.*</includes>
+									<excludes></excludes>
+									<inputSchema>public</inputSchema>
+								</database>
+								<generate>
+									<pojos>true</pojos>
+									<pojosEqualsAndHashCode>true</pojosEqualsAndHashCode>
+									<javaTimeTypes>true</javaTimeTypes>
+									<fluentSetters>true</fluentSetters>
+								</generate>
+								<target>
+									<packageName>
+										com.tej.JooQDemo.jooq.sample.model
+									</packageName>
+									<directory>
+										target/generated-sources/jooq
+									</directory>
+								</target>
+							</generator>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
